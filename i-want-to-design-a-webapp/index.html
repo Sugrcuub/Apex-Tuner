@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ApexTune Lab</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span>
+          </div>
+          <div>
+            <strong>ApexTune</strong>
+            <small>Calibration Lab</small>
+          </div>
+        </div>
+
+        <nav class="nav-list" aria-label="Workspace">
+          <button class="nav-item active" type="button" aria-label="Dashboard" title="Dashboard">
+            <span class="icon">D</span>
+            <span>Dashboard</span>
+          </button>
+          <button class="nav-item" type="button" aria-label="Diagnostics" title="Diagnostics">
+            <span class="icon">A</span>
+            <span>Diagnostics</span>
+          </button>
+          <button class="nav-item" type="button" aria-label="Maps" title="Maps">
+            <span class="icon">M</span>
+            <span>Maps</span>
+          </button>
+          <button class="nav-item" type="button" aria-label="Simulator" title="Simulator">
+            <span class="icon">S</span>
+            <span>Simulator</span>
+          </button>
+          <button class="nav-item" type="button" aria-label="Files" title="Files">
+            <span class="icon">F</span>
+            <span>Files</span>
+          </button>
+        </nav>
+
+        <section class="vehicle-card" aria-label="Current vehicle">
+          <div class="vehicle-visual" aria-hidden="true">
+            <div class="car-line roof"></div>
+            <div class="car-line hood"></div>
+            <div class="wheel front"></div>
+            <div class="wheel rear"></div>
+          </div>
+          <div class="vehicle-meta">
+            <strong>2018 Golf R</strong>
+            <span>EA888 Gen 3 - IS38</span>
+          </div>
+          <div class="health-strip">
+            <span class="ok"></span>
+            <span class="warn"></span>
+            <span class="hot"></span>
+            <span class="ok"></span>
+            <span class="ok"></span>
+          </div>
+        </section>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Tune Review</p>
+            <h1>Calibration Intelligence</h1>
+          </div>
+          <div class="top-actions">
+            <button class="ghost-button" type="button" id="loadSample">
+              <span aria-hidden="true">R</span>
+              Load sample
+            </button>
+            <label class="file-button">
+              <span aria-hidden="true">U</span>
+              Import tune
+              <input id="tuneUpload" type="file" accept=".bin,.hex,.xdf,.csv,.json,.txt" />
+            </label>
+          </div>
+        </header>
+
+        <section class="role-switcher" aria-label="Audience mode">
+          <button class="role-pill active" type="button" data-role="mechanic">
+            <span>Mechanic</span>
+          </button>
+          <button class="role-pill" type="button" data-role="tuner">
+            <span>Tuner</span>
+          </button>
+          <button class="role-pill" type="button" data-role="enthusiast">
+            <span>Enthusiast</span>
+          </button>
+          <button class="role-pill" type="button" data-role="daily">
+            <span>Everyday</span>
+          </button>
+        </section>
+
+        <section class="grid">
+          <article class="panel profile-panel">
+            <div class="panel-header">
+              <div>
+                <span class="kicker">Vehicle Knowledge</span>
+                <h2>Platform profile</h2>
+              </div>
+            </div>
+            <label class="field">
+              <span>Platform</span>
+              <select id="platformSelect"></select>
+            </label>
+            <p class="meta-line" id="platformMeta">Bosch MG1/Simos family - DI turbo gasoline</p>
+            <div class="chip-row compact" id="platformWatch"></div>
+            <div class="mod-list" id="modList" aria-label="Selected modifications"></div>
+          </article>
+
+          <article class="panel score-panel">
+            <div class="panel-header">
+              <div>
+                <span class="kicker">Risk Index</span>
+                <h2 id="scoreLabel">78</h2>
+              </div>
+              <span class="status-badge caution" id="statusBadge">Needs revision</span>
+            </div>
+            <div class="gauge" aria-label="Risk gauge">
+              <div class="gauge-track">
+                <div class="gauge-fill" id="gaugeFill"></div>
+              </div>
+              <div class="gauge-row">
+                <span>Conservative</span>
+                <span>Aggressive</span>
+              </div>
+            </div>
+            <div class="metric-list">
+              <div>
+                <span>Knock margin</span>
+                <strong id="knockMetric">3.8 deg</strong>
+              </div>
+              <div>
+                <span>AFR delta</span>
+                <strong id="afrMetric">+0.8</strong>
+              </div>
+              <div>
+                <span>Boost error</span>
+                <strong id="boostMetric">+3.1 psi</strong>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel upload-panel">
+            <div class="panel-header">
+              <div>
+                <span class="kicker">Source</span>
+                <h2 id="fileName">Stage 2 street file</h2>
+              </div>
+              <span class="status-badge live">Parsed</span>
+            </div>
+            <div class="file-drop" id="dropZone">
+              <div class="chip-row">
+                <span class="chip">BIN</span>
+                <span class="chip">XDF</span>
+                <span class="chip">CSV Log</span>
+              </div>
+              <strong>ECU snapshot ready</strong>
+              <span id="fileMeta">42 tables - 18 channels - checksum valid</span>
+            </div>
+          </article>
+
+          <article class="panel findings-panel">
+            <div class="panel-header">
+              <div>
+                <span class="kicker">Fix List</span>
+                <h2 id="fixTitle">Priority faults</h2>
+              </div>
+              <span class="status-badge hot" id="criticalBadge">3 critical</span>
+            </div>
+            <div class="finding-list" id="findingList"></div>
+          </article>
+
+          <article class="panel log-panel">
+            <div class="panel-header">
+              <div>
+                <span class="kicker">Log Analyzer</span>
+                <h2>CSV diagnostics</h2>
+              </div>
+              <button class="ghost-button compact" type="button" id="sampleLogButton">Sample log</button>
+            </div>
+            <textarea id="logInput" spellcheck="false" aria-label="CSV log input"></textarea>
+            <div class="button-row">
+              <button class="primary-button" type="button" id="analyzeLogButton">Analyze log</button>
+            </div>
+            <p class="meta-line" id="logSummary">Paste a CSV log to analyze tune health.</p>
+          </article>
+
+          <article class="panel map-panel">
+            <div class="panel-header">
+              <div>
+                <span class="kicker">Fuel Map</span>
+                <h2>Load x RPM</h2>
+              </div>
+              <div class="segmented" aria-label="Map mode">
+                <button class="active" type="button" data-map="fuel">Fuel</button>
+                <button type="button" data-map="spark">Spark</button>
+                <button type="button" data-map="boost">Boost</button>
+              </div>
+            </div>
+            <div class="heatmap" id="heatmap" aria-label="Editable tune map"></div>
+            <div class="map-footer">
+              <span>2,400</span>
+              <span>3,200</span>
+              <span>4,000</span>
+              <span>4,800</span>
+              <span>5,600</span>
+              <span>6,400</span>
+            </div>
+          </article>
+
+          <article class="panel simulator-panel">
+            <div class="panel-header">
+              <div>
+                <span class="kicker">Drive Simulation</span>
+                <h2>Third gear pull</h2>
+              </div>
+              <button class="icon-button" type="button" id="simulateButton" aria-label="Run simulation" title="Run simulation">
+                P
+              </button>
+            </div>
+            <div class="chart" id="chart" aria-label="Simulation chart">
+              <svg viewBox="0 0 620 260" role="img" aria-labelledby="chartTitle">
+                <title id="chartTitle">Power and torque estimate</title>
+                <defs>
+                  <linearGradient id="areaA" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#1fb8a6" stop-opacity="0.55" />
+                    <stop offset="100%" stop-color="#1fb8a6" stop-opacity="0" />
+                  </linearGradient>
+                  <linearGradient id="areaB" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#f0a43a" stop-opacity="0.44" />
+                    <stop offset="100%" stop-color="#f0a43a" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <g class="gridlines">
+                  <line x1="30" y1="45" x2="590" y2="45" />
+                  <line x1="30" y1="100" x2="590" y2="100" />
+                  <line x1="30" y1="155" x2="590" y2="155" />
+                  <line x1="30" y1="210" x2="590" y2="210" />
+                </g>
+                <path class="area torque" d="M30,210 C110,142 170,108 235,88 C315,65 402,74 590,98 L590,210 Z" />
+                <path class="area power" d="M30,210 C112,198 176,172 248,137 C348,88 460,70 590,62 L590,210 Z" />
+                <path class="line torque" d="M30,210 C110,142 170,108 235,88 C315,65 402,74 590,98" />
+                <path class="line power" d="M30,210 C112,198 176,172 248,137 C348,88 460,70 590,62" />
+              </svg>
+            </div>
+            <div class="legend">
+              <span><i class="power-dot"></i> Power</span>
+              <span><i class="torque-dot"></i> Torque</span>
+              <span id="simResult">+24 whp - +31 lb-ft - EGT elevated</span>
+            </div>
+          </article>
+
+          <article class="panel generator-panel">
+            <div class="panel-header">
+              <div>
+                <span class="kicker">Generated File</span>
+                <h2>Revision B</h2>
+              </div>
+              <span class="status-badge ok">Checksum ready</span>
+            </div>
+            <div class="control-stack">
+              <label>
+                <span>Target boost</span>
+                <input id="boostTarget" type="range" min="6" max="34" value="24" />
+                <strong><output id="boostOutput">24 psi</output></strong>
+              </label>
+              <label>
+                <span>Fuel safety</span>
+                <input id="fuelTarget" type="range" min="1" max="10" value="7" />
+                <strong><output id="fuelOutput">7/10</output></strong>
+              </label>
+            </div>
+            <div class="button-row">
+              <button class="primary-button" type="button" id="generateButton">Generate file</button>
+              <button class="ghost-button compact" type="button" id="exportButton">Export</button>
+            </div>
+          </article>
+
+          <article class="panel knowledge-panel">
+            <div class="panel-header">
+              <div>
+                <span class="kicker">Knowledge Base</span>
+                <h2>Failure patterns</h2>
+              </div>
+            </div>
+            <div class="filter-row" id="knowledgeFilters" aria-label="Knowledge filters"></div>
+            <div class="knowledge-list" id="knowledgeList"></div>
+          </article>
+
+          <article class="panel revision-panel">
+            <div class="panel-header">
+              <div>
+                <span class="kicker">Revision Plan</span>
+                <h2>Generated actions</h2>
+              </div>
+              <span class="status-badge ok">Editable</span>
+            </div>
+            <ol id="revisionPlan" class="revision-list"></ol>
+            <p class="disclaimer">Prototype guidance only. A real tune file needs vehicle-specific definitions, checksum correction, and dyno or road validation by a qualified tuner.</p>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
